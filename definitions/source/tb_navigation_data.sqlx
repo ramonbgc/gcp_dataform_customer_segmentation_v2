@@ -1,0 +1,6 @@
+config {
+    type: "declaration",
+    database: "prj-d2-data-poc-vivo",
+    schema: dataform.projectConfig.vars.source_dataset,
+    name: "tb_navigation_data"
+}

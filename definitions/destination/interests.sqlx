@@ -1,0 +1,30 @@
+config {
+    type: "table",
+    schema: dataform.projectConfig.vars.destination_dataset,
+    tags: ["inference"]
+}
+
+WITH inference_distance_centroids as (
+  SELECT i.msisdn, i.weight, i.interest, u.*, DENSE_RANK() OVER (PARTITION BY i.msisdn ORDER BY i.weight DESC) AS rank_value
+  FROM ${ref("infered_data")} i, UNNEST(i.NEAREST_CENTROIDS_DISTANCE) u
+), infered_features AS (
+  select *
+  FROM inference_distance_centroids i
+  WHERE DISTANCE = (SELECT MIN(DISTANCE) FROM inference_distance_centroids WHERE msisdn=i.msisdn and i.interest=interest)
+), centroids AS (
+  SELECT centroid_id, categorical_value[0].category as feature, categorical_value[0].value
+  FROM ML.CENTROIDS(MODEL ${dataform.projectConfig.vars.destination_dataset}.customer_segmentation_v2) c
+)
+SELECT 
+  i.msisdn, c.feature as interesse, 
+  CASE (MIN(i.rank_value))
+    WHEN 1 THEN 'ALTO'
+    WHEN 2 THEN 'MEDIO'
+    WHEN 3 THEN 'BAIXO'
+    ELSE 'SEM INTERESSE'
+  END
+    AS nvl_interesse
+FROM infered_features i
+  LEFT JOIN centroids c ON i.centroid_id=c.centroid_id
+WHERE rank_value <= 4
+GROUP BY i.msisdn, c.feature
