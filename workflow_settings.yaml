@@ -1,0 +1,8 @@
+defaultProject: prj-d2-data-poc-vivo
+defaultLocation: us-central1
+defaultDataset: M2C_data_customer_segmentation
+defaultAssertionDataset: dataform_assertions
+dataformCoreVersion: 3.0.0
+vars:
+    source_dataset: M2C_data_customer_segmentation
+    destination_dataset: M2C_data_customer_segmentation

@@ -1,0 +1,20 @@
+config {
+  type: 'operations',
+  hasOutput: true,
+  dependencies: ["tb_navigation_data"],
+  tags: ["model_creation"]
+}
+
+CREATE OR REPLACE MODEL ${dataform.projectConfig.vars.destination_dataset}.customer_segmentation_v2
+OPTIONS(
+  MODEL_TYPE='KMEANS',
+  KMEANS_INIT_METHOD = 'KMEANS++',
+  NUM_CLUSTERS = 24,
+  DISTANCE_TYPE = 'COSINE',
+  MODEL_REGISTRY = "vertex_ai",
+  VERTEX_AI_MODEL_ID = "M2C_customer_segmentation",
+  VERTEX_AI_MODEL_VERSION_ALIASES = ["native_one_hot_encoder"],
+  STANDARDIZE_FEATURES = TRUE
+  ) AS
+SELECT * EXCEPT (msisdn, weight)
+FROM ${ref("tb_navigation_data")}

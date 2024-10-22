@@ -1,0 +1,15 @@
+config {
+  type: 'table',
+  schema: dataform.projectConfig.vars.destination_dataset,
+  dependencies: ["model_creation"],
+  tags: ["model_predict"]
+}
+
+SELECT *
+FROM ML.PREDICT(
+    MODEL ${dataform.projectConfig.vars.destination_dataset}.customer_segmentation_v2,
+    (
+        SELECT *
+        FROM ${ref('tb_navigation_data')}
+    )
+)
