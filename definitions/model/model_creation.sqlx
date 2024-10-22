@@ -12,7 +12,7 @@ OPTIONS(
   NUM_CLUSTERS = 24,
   DISTANCE_TYPE = 'COSINE',
   MODEL_REGISTRY = "vertex_ai",
-  VERTEX_AI_MODEL_ID = "M2C_customer_segmentation",
+  VERTEX_AI_MODEL_ID = "m2c_customer_segmentation",
   VERTEX_AI_MODEL_VERSION_ALIASES = ["native_one_hot_encoder"],
   STANDARDIZE_FEATURES = TRUE
   ) AS
