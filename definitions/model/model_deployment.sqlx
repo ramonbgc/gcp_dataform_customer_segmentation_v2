@@ -1,0 +1,17 @@
+config {
+  type: 'operations',
+  hasOutput: true,
+  tags: ["model_deployment"]
+}
+
+-- EXPORT MODEL ${dataform.projectConfig.vars.model_experiment_dataset}.customer_segmentation_v2
+-- OPTIONS(URI = '${dataform.projectConfig.vars.gcs_working_bucket}');
+
+-- CREATE OR REPLACE MODEL ${dataform.projectConfig.vars.model_production_dataset}.customer_segmentation_v2 
+-- OPTIONS (
+--   MODEL_REGISTRY = "vertex_ai",
+--   VERTEX_AI_MODEL_ID = "m2c_customer_segmentation",
+--   VERTEX_AI_MODEL_VERSION_ALIASES = ["native_one_hot_encoder"],
+--   MODEL_TYPE = 'TENSORFLOW',
+--   MODEL_PATH = '${dataform.projectConfig.vars.gcs_working_bucket}/*'
+-- )
