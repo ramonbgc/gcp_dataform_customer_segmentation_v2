@@ -6,3 +6,6 @@ dataformCoreVersion: 3.0.0
 vars:
     source_dataset: M2C_data_customer_segmentation
     destination_dataset: M2C_data_customer_segmentation
+    model_experiment_dataset: M2C_data_customer_segmentation
+    model_production_dataset: M2C_ml_experiments
+    gcs_working_bucket: gs://gcs-m2c-dataform/models_tmp
